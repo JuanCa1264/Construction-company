@@ -1,0 +1,370 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.vistas;
+
+import com.Dao.DaoRRHH;
+import com.modelo.MateriaPrima;
+import com.modelo.RRHH;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author usuario
+ */
+public class FrmRecursosHumanos extends javax.swing.JInternalFrame {
+
+    /**
+     * Creates new form FrmRecursosHumanos
+     */
+    public FrmRecursosHumanos() {
+        initComponents();
+        tablaRRHH();
+    }
+    
+    DaoRRHH drh = new DaoRRHH();
+    RRHH rh = new RRHH();
+    
+    public void tablaRRHH(){
+        String [] cols = {"Código RRHH","Nombre", "Descripción"};
+        Object[] obj = new Object[3];
+        DefaultTableModel tabla = new DefaultTableModel(null, cols);
+        List ls;
+        
+        try {
+            ls = drh.mostrarRRHH();
+            for (int i = 0; i <ls.size(); i++) {
+                rh = (RRHH)ls.get(i);
+                obj[0] = rh.getIdRRHH();
+                obj[1] = rh.getNombreRRHH();
+                obj[2] = rh.getDescripcion();
+                
+                
+                tabla.addRow(obj);
+            }
+            
+            
+            this.jTable1.setModel(tabla);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,"Error al mostrar datos de la empleado "+e.toString());
+        }
+        
+        
+        
+    }
+    
+    public void insertar(){
+        
+        try {
+            rh.setNombreRRHH(this.txtRRHH.getText());
+            rh.setDescripcion(this.txtDesc.getText());
+            rh.setEstado(1);
+        
+            drh.insertarRRHH(rh);
+        
+        JOptionPane.showMessageDialog(null, "Datos insertados con éxito");
+        
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+     public void modificar(){
+        
+        try {
+            rh.setNombreRRHH(this.txtRRHH.getText());
+            rh.setDescripcion(this.txtDesc.getText());
+            rh.setIdRRHH(Integer.parseInt(this.txtId.getText()));
+        
+            int SioNo = JOptionPane.showConfirmDialog(this, "Desea modificar al proveedor", "Modificar empleado", JOptionPane.YES_NO_OPTION);
+            
+            if (SioNo==0) {
+                drh.modificarRRHH(rh);
+                JOptionPane.showMessageDialog(rootPane,"RRHH modificada con éxito", "Confirmación",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            drh.modificarRRHH(rh);
+        
+        JOptionPane.showMessageDialog(null, "Modificado con éxito");
+        
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+    }
+     
+     public void eliminar(){
+        try {
+            rh.setIdRRHH(Integer.parseInt(this.txtId.getText()));
+            int SioNo = JOptionPane.showConfirmDialog(this, "Desea eliminar el empleado","Eliminar empleado", JOptionPane.YES_NO_OPTION);
+            
+            if (SioNo==0) {
+                drh.eliminarRRHH(rh);
+                JOptionPane.showMessageDialog(rootPane, "Eliminado con éxito","Confirmación", JOptionPane.INFORMATION_MESSAGE);
+                tablaRRHH();
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+     
+     public void eliminarL(){
+        try {
+            rh.setIdRRHH(Integer.parseInt(this.txtId.getText()));
+            int SioNo = JOptionPane.showConfirmDialog(this, "Desea eliminar la facultad","Eliminar facultad", JOptionPane.YES_NO_OPTION);
+            
+            if (SioNo==0) {
+                drh.eliminarRRHHLogico(rh);
+                JOptionPane.showMessageDialog(rootPane, "Eliminado con éxito","Confirmación", JOptionPane.INFORMATION_MESSAGE);
+                tablaRRHH();
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+     
+     public void llenarCampos(){
+        
+        int fila = this.jTable1.getSelectedRow();
+        this.txtId.setText(String.valueOf(this.jTable1.getValueAt(fila, 0)));
+        this.txtRRHH.setText(String.valueOf(this.jTable1.getValueAt(fila, 1)));
+        this.txtDesc.setText(String.valueOf(this.jTable1.getValueAt(fila, 2)));
+         
+    }
+     
+     public void limpiar(){
+        this.txtId.setText("");
+        this.txtRRHH.setText("");
+        this.txtDesc.setText("");
+        this.txtId.setText("");
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        btnAgregar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
+        btnEliminar1 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        txtRRHH = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        txtDesc = new javax.swing.JTextField();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+
+        btnAgregar.setText("AGREGAR");
+        btnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAgregarMouseClicked(evt);
+            }
+        });
+
+        btnModificar.setText("MODIFICAR");
+        btnModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnModificarMouseClicked(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.setBackground(new java.awt.Color(0, 255, 255));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/iconos/trabajo-en-equipo.png"))); // NOI18N
+        jLabel1.setText("GESTION DE RECURSOS HUMANOS");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEliminarMouseClicked(evt);
+            }
+        });
+
+        btnEliminar1.setText("ELIMINADO LOGICO");
+        btnEliminar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEliminar1MouseClicked(evt);
+            }
+        });
+
+        jLabel11.setText("Nombre RRHH");
+
+        jLabel12.setText("Descripción");
+
+        jLabel2.setText("Id RRHH");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addGap(25, 25, 25))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtRRHH, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnAgregar)
+                        .addGap(55, 55, 55)
+                        .addComponent(btnModificar)
+                        .addGap(56, 56, 56)
+                        .addComponent(btnEliminar)
+                        .addGap(70, 70, 70)
+                        .addComponent(btnEliminar1)))
+                .addContainerGap(68, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtRRHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnEliminar1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 26, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        llenarCampos();
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
+        insertar();
+        tablaRRHH();
+        limpiar();
+    }//GEN-LAST:event_btnAgregarMouseClicked
+
+    private void btnModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModificarMouseClicked
+        modificar();
+        tablaRRHH();
+        limpiar();
+    }//GEN-LAST:event_btnModificarMouseClicked
+
+    private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
+        eliminar();
+        tablaRRHH();
+        limpiar();
+    }//GEN-LAST:event_btnEliminarMouseClicked
+
+    private void btnEliminar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminar1MouseClicked
+        eliminarL();
+        tablaRRHH();
+        limpiar();
+    }//GEN-LAST:event_btnEliminar1MouseClicked
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminar1;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtDesc;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtRRHH;
+    // End of variables declaration//GEN-END:variables
+}
